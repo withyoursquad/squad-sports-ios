@@ -15,7 +15,7 @@ let package = Package(
         .binaryTarget(
             name: "SquadSDK",
             url: "https://github.com/withyoursquad/squad-sports-ios/releases/download/1.0.0/SquadSDK.xcframework.zip",
-            checksum: "YOUR_CHECKSUM_HERE"
+            checksum: "da97b7831f5cf3e2113c5b6e352d502fd0da732852a9ae25a7925235622e324a"
         )
     ]
 )
