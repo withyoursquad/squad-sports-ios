@@ -1,0 +1,10 @@
+{
+  "versions": {
+    "1.0.0": {
+      "url": "https://github.com/withyoursquad/squad-sports-ios/releases/download/1.0.0/SquadSDK.xcframework.zip",
+      "checksum": "YOUR_CHECKSUM_HERE",
+      "min_ios_version": "13.0"
+    }
+  },
+  "latest": "1.0.0"
+}
