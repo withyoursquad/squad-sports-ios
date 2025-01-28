@@ -1,34 +1,34 @@
 # Squad SDK for iOS
 
-The Squad SDK for iOS enables you to integrate the complete Squad experience into your iOS applications. This includes Squad's social features, voice calling, and interactive elements all through a seamless WebView integration.
+The Squad SDK enables seamless integration of Squad's voice calling and social features into your iOS applications. Through our WebView-based integration, you can provide your users with a rich communication experience including voice calls with custom call titles and emojis.
 
 ## Requirements
 
-- iOS 13.0 or later
-- Xcode 13.0 or later
-- Swift 5.3 or later
+- iOS 13.0+
+- Xcode 13.0+
+- Swift 5.3+
 
 ## Installation
 
 ### Swift Package Manager
 
-The Squad SDK for iOS can be installed via Swift Package Manager. Add the following dependency to your Package.swift file:
+Add the Squad SDK package in Xcode:
+
+1. Go to File > Add Packages
+2. Enter Package URL: `https://github.com/withyoursquad/squad-sports-ios`
+3. Select "Up to Next Major Version" with "1.0.0"
+
+Or add it to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/withyoursquad/squad-sports-ios.git", from: "1.0.0")
+    .package(url: "https://github.com/withyoursquad/squad-sports-ios", from: "1.0.0")
 ]
 ```
 
-Or in Xcode:
-
-1. File > Add Packages
-2. Enter "https://github.com/withyoursquad/squad-sports-ios.git"
-3. Select "Up to Next Major Version" with "1.0.0"
-
 ### CocoaPods
 
-Add the following line to your Podfile:
+Add this to your `Podfile`:
 
 ```ruby
 pod 'SquadSDK', '~> 1.0.0'
@@ -40,80 +40,138 @@ Then run:
 pod install
 ```
 
-## Quick Start
+## Usage
 
-1. Initialize the SDK with your organization credentials:
+### Initialize the SDK
+
+First, configure and initialize the SDK with your organization credentials:
 
 ```swift
 import SquadSDK
 
-let squadSDK = SquadSDK(
-    organizationId: "YOUR_ORG_ID",
-    apiKey: "YOUR_API_KEY"
+// Configure with your credentials
+SquadClient.configure(
+    apiKey: "YOUR_API_KEY",
+    orgId: "YOUR_ORG_ID",
+    environment: .production // or .staging for development
 )
 
 // Initialize the SDK
-try await squadSDK.initialize()
+do {
+    try await SquadClient.shared.initialize()
+    // SDK is ready
+} catch {
+    // Handle initialization error
+}
 ```
 
-2. Initialize the user session:
+### Authenticate Users
+
+You can authenticate users either with an email or an existing auth token:
 
 ```swift
 // Using email
-try await squadSDK.initializeUser(email: "user@example.com")
+do {
+    let sessionToken = try await SquadClient.shared.validateUser(email: userEmail)
+    // User authenticated
+} catch {
+    // Handle authentication error
+}
 
-// Or using a token
-try await squadSDK.initializeUser(token: "USER_TOKEN")
+// Using existing auth token
+do {
+    let sessionToken = try await SquadClient.shared.validateUser(token: existingToken)
+    // User authenticated
+} catch {
+    // Handle authentication error
+}
 ```
 
-3. Present the Squad experience:
+### Present Squad Experience
+
+After authentication, present the Squad WebView:
 
 ```swift
-try await squadSDK.openSquadWebView()
+// Ensure you have a reference to your current UIViewController
+guard let viewController = getCurrentViewController() else {
+    return
+}
+
+// Present the Squad WebView
+SquadClient.shared.presentWebView(
+    sessionToken: sessionToken,
+    from: viewController
+)
 ```
 
 ## Features
 
-The Squad SDK provides access to the complete Squad platform experience:
+The Squad SDK provides:
 
-- Squad Management
+- Voice Calling
 
-  - Create and manage squads
-  - Friend connections
-  - Squad member interactions
+  - High-quality voice calls
+  - Custom call titles
+  - Interactive emoji reactions
+  - CallKit integration
 
-- Communication
-
-  - Squad Line voice calling
+- WebView Integration
+  - Squad social features
+  - Friend management
+  - Squad creation and management
   - Voice messages
-  - Real-time interactions
+  - Polls and interactive content
 
-- Interactive Features
+## Error Handling
 
-  - Freestyles
-  - Polls
-  - Custom emojis and reactions
+The SDK uses structured error handling. Handle potential errors appropriately:
 
-- Integration
-  - Native WebView integration
-  - Background voice call support
-  - CallKit integration for voice features
+```swift
+do {
+    try await SquadClient.shared.initialize()
+} catch {
+    if let squadError = error as? SquadError {
+        switch squadError {
+        case .invalidApiKey:
+            // Handle invalid API key
+        case .networkError:
+            // Handle network issues
+        case .authenticationError:
+            // Handle auth issues
+        default:
+            // Handle other errors
+        }
+    }
+}
+```
 
-## Documentation
+## Thread Safety
 
-For detailed documentation, please visit [Squad Documentation](https://docs.withyoursquad.com).
+The SDK's public APIs are thread-safe. However, UI-related calls (like `presentWebView`) must be made on the main thread.
 
-## Support
+## Best Practices
 
-If you need help or have questions:
+1. Initialize the SDK early in your app's lifecycle
+2. Cache the session token for reuse
+3. Handle background/foreground transitions appropriately
+4. Implement proper error handling
+5. Test with both production and staging environments
 
-- Visit our [Support Center](https://support.withyoursquad.com)
-- Contact us at support@withyoursquad.com
+## Support & Troubleshooting
+
+- Visit [Squad Developer Portal](https://developers.squadforsports.com)
+- Contact support: support@squadforsports.com
+- View documentation: [Squad SDK Docs](https://docs.squadforsports.com)
+- Report issues: [GitHub Issues](https://github.com/withyoursquad/squad-sports-ios/issues)
 
 ## License
 
-The Squad SDK is distributed under a commercial license. See LICENSE for details.
+The Squad SDK is proprietary software distributed under a commercial license. Contact sales@squadforsports.com for licensing information.
 
-## Version History
+## Security
 
-See the [changelogs](https://github.com/withyoursquad/squad-sports-ios/tree/main/changelogs) directory for detailed release notes.
+Report security vulnerabilities to security@squadforsports.com
+
+## Release Notes
+
+See [CHANGELOG.md](https://github.com/withyoursquad/squad-sports-ios/blob/main/CHANGELOG.md) for detailed version history.
