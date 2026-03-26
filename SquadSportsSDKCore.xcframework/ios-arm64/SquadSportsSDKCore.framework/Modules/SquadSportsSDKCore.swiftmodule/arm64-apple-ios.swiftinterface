@@ -1,0 +1,2041 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.0.3 effective-5.10 (swiftlang-6.0.3.1.10 clang-1600.0.30.1)
+// swift-module-flags: -target arm64-apple-ios16.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name SquadSportsSDKCore -package-name ios
+import AVFoundation
+import CallKit
+import Combine
+import Contacts
+import Foundation
+import Foundation/*.Bundle*/
+import Foundation/*.ProcessInfo*/
+import Foundation/*.URL*/
+import Network
+import PhotosUI
+import Security
+import Swift
+import SwiftUI
+import TwilioVoice
+import UIKit
+import UserNotifications
+import _Concurrency
+import _PhotosUI_SwiftUI
+import _StringProcessing
+import _SwiftConcurrencyShims
+public enum SquadModels {
+  public struct User : Swift.Codable, Swift.Identifiable {
+    public let id: Swift.String
+    public var displayName: Swift.String?
+    public var email: Swift.String?
+    public var phone: Swift.String?
+    public var imageUrl: Swift.String?
+    public var community: Swift.String?
+    public var status: Swift.String?
+    public var labels: [Swift.String]?
+    public typealias ID = Swift.String
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct Connection : Swift.Codable, Swift.Identifiable {
+    public let id: Swift.String
+    public var status: Swift.String?
+    public var creator: SquadSportsSDKCore.SquadModels.User?
+    public var recipient: SquadSportsSDKCore.SquadModels.User?
+    public typealias ID = Swift.String
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct Squad : Swift.Codable {
+    public var connections: [SquadSportsSDKCore.SquadModels.Connection]?
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct Message : Swift.Codable, Swift.Identifiable {
+    public let id: Swift.String
+    public var text: Swift.String?
+    public var audioUrl: Swift.String?
+    public var audioDuration: Swift.Double?
+    public var sender: SquadSportsSDKCore.SquadModels.User?
+    public var connectionId: Swift.String?
+    public var createdAt: Swift.String?
+    public var reactions: [SquadSportsSDKCore.SquadModels.Reaction]?
+    public typealias ID = Swift.String
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct Conversation : Swift.Codable {
+    public var messages: [SquadSportsSDKCore.SquadModels.Message]?
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct Reaction : Swift.Codable {
+    public var emoji: Swift.String?
+    public var userId: Swift.String?
+    public var count: Swift.Int?
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct Freestyle : Swift.Codable, Swift.Identifiable {
+    public let id: Swift.String
+    public var audioUrl: Swift.String?
+    public var duration: Swift.Double?
+    public var creator: SquadSportsSDKCore.SquadModels.User?
+    public var createdAt: Swift.String?
+    public var listenCount: Swift.Int?
+    public var reactionCount: Swift.Int?
+    public var prompt: SquadSportsSDKCore.SquadModels.Prompt?
+    public typealias ID = Swift.String
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct Prompt : Swift.Codable {
+    public var text: Swift.String?
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct Feed : Swift.Codable {
+    public var freestyles: [SquadSportsSDKCore.SquadModels.Freestyle]?
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct Poll : Swift.Codable, Swift.Identifiable {
+    public let id: Swift.String
+    public var question: Swift.String?
+    public var options: [SquadSportsSDKCore.SquadModels.PollOption]?
+    public var totalVotes: Swift.Int?
+    public var myResponse: SquadSportsSDKCore.SquadModels.PollResponse?
+    public typealias ID = Swift.String
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct PollOption : Swift.Codable, Swift.Identifiable {
+    public let id: Swift.String
+    public var text: Swift.String?
+    public var percentage: Swift.Double?
+    public typealias ID = Swift.String
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct PollResponse : Swift.Codable {
+    public var optionId: Swift.String?
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct PollFeed : Swift.Codable {
+    public var polls: [SquadSportsSDKCore.SquadModels.Poll]?
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct Community : Swift.Codable, Swift.Identifiable {
+    public let id: Swift.String
+    public var name: Swift.String
+    public var color: Swift.String?
+    public var secondaryColor: Swift.String?
+    public var imageUri: Swift.String?
+    public var labels: [Swift.String]?
+    public typealias ID = Swift.String
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct Communities : Swift.Codable {
+    public var communities: [SquadSportsSDKCore.SquadModels.Community]?
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct Event : Swift.Codable, Swift.Identifiable {
+    public let id: Swift.String
+    public var title: Swift.String?
+    public var description: Swift.String?
+    public var startDate: Swift.String?
+    public var location: Swift.String?
+    public var imageUrl: Swift.String?
+    public var attendeeCount: Swift.Int?
+    public var isAttending: Swift.Bool?
+    public typealias ID = Swift.String
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct Events : Swift.Codable {
+    public var events: [SquadSportsSDKCore.SquadModels.Event]?
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct Wallet : Swift.Codable {
+    public var balance: Swift.Int?
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct Coupon : Swift.Codable, Swift.Identifiable {
+    public let id: Swift.String
+    public var code: Swift.String?
+    public var title: Swift.String?
+    public var description: Swift.String?
+    public var discount: Swift.String?
+    public var status: Swift.String?
+    public var brand: SquadSportsSDKCore.SquadModels.Brand?
+    public var expiresAt: Swift.String?
+    public typealias ID = Swift.String
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct Brand : Swift.Codable {
+    public var name: Swift.String?
+    public var imageUrl: Swift.String?
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct Coupons : Swift.Codable {
+    public var coupons: [SquadSportsSDKCore.SquadModels.Coupon]?
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct InvitationCode : Swift.Codable {
+    public var code: Swift.String?
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public static func parse<T>(_ type: T.Type, from data: Foundation.Data) -> T? where T : Swift.Decodable, T : Swift.Encodable
+}
+@_hasMissingDesignatedInitializers final public class SquadAPIClient {
+  final public let baseURL: Swift.String
+  final public var silentReAuthHandler: (() async -> Swift.Bool)?
+  final public func healthCheck() async -> Swift.Bool
+  final public func validateToken() async -> Swift.Bool
+  final public func getLoggedInUser() async throws -> Foundation.Data
+  final public func getUser(id: Swift.String) async throws -> Foundation.Data
+  final public func searchUserByEmail(_ email: Swift.String) async throws -> Foundation.Data
+  final public func searchUsersByPhone(_ phones: [Swift.String]) async throws -> Foundation.Data
+  final public func updateLoggedInUser(_ fields: [Swift.String : Any]) async throws -> Foundation.Data
+  final public func blockUser(_ userId: Swift.String) async throws -> Foundation.Data
+  final public func unblockUser(_ userId: Swift.String) async throws -> Foundation.Data
+  final public func requestAccountDeletion() async throws -> Foundation.Data
+  final public func getUserActivity(userId: Swift.String) async throws -> Foundation.Data
+  final public func getUserConnections() async throws -> Foundation.Data
+  final public func sendOrAcceptInvite(userId: Swift.String) async throws -> Foundation.Data
+  final public func removeConnection(userId: Swift.String) async throws -> Foundation.Data
+  final public func getFeed(page: Swift.Int = 1, pageSize: Swift.Int = 20) async throws -> Foundation.Data
+  final public func createFreestyle(body: Foundation.Data) async throws -> Foundation.Data
+  final public func createFreestyleReaction(freestyleId: Swift.String, body: Foundation.Data) async throws -> Foundation.Data
+  final public func getFreestylePrompts() async throws -> Foundation.Data
+  final public func getMessages(connectionId: Swift.String) async throws -> Foundation.Data
+  final public func createMessage(body: Foundation.Data) async throws -> Foundation.Data
+  final public func createMessageReaction(messageId: Swift.String, body: Foundation.Data) async throws -> Foundation.Data
+  final public func getActivePolls() async throws -> Foundation.Data
+  final public func createOrUpdatePollResponse(pollId: Swift.String, body: Foundation.Data) async throws -> Foundation.Data
+  final public func createPollNudge(pollId: Swift.String, recipientId: Swift.String) async throws -> Foundation.Data
+  final public func createPollResponseReaction(pollId: Swift.String, responseId: Swift.String, body: Foundation.Data) async throws -> Foundation.Data
+  final public func fetchAllCommunities() async throws -> Foundation.Data
+  final public func updateUserCommunity(communityId: Swift.String) async throws -> Foundation.Data
+  final public func getCommunityByName(_ name: Swift.String) async throws -> Foundation.Data
+  final public func getEvents() async throws -> Foundation.Data
+  final public func getAttendees(eventId: Swift.String) async throws -> Foundation.Data
+  final public func setAttendee(eventId: Swift.String, body: Foundation.Data) async throws -> Foundation.Data
+  final public func getWallet() async throws -> Foundation.Data
+  final public func getCoupons() async throws -> Foundation.Data
+  final public func redeemCoupon(code: Swift.String, body: Foundation.Data) async throws -> Foundation.Data
+  final public func listBrands() async throws -> Foundation.Data
+  final public func getInvitationCode(code: Swift.String) async throws -> Foundation.Data
+  final public func redeemInviteCode(code: Swift.String) async throws -> Foundation.Data
+  final public func getVoiceToken() async throws -> Swift.String
+  final public func createConnectionsLineRoom(connectionId: Swift.String) async throws -> Foundation.Data
+  final public func getCustomerJourney() async throws -> Foundation.Data
+  final public func uploadDiagnostics(body: Foundation.Data) async throws -> Foundation.Data
+  final public func partnerUserSync(partnerId: Swift.String, communityId: Swift.String, userData: SquadSportsSDKCore.PartnerUserData) async throws -> Foundation.Data
+  final public func exchangeSSOToken(provider: Swift.String, token: Swift.String) async throws -> Foundation.Data
+  final public func updateDeviceInfo(token: Swift.String, platform: Swift.String)
+  final public func getActivePlacements() async throws -> [[Swift.String : Any]]
+  final public func reportImpressions(_ impressions: [[Swift.String : Any]])
+  final public func get(path: Swift.String, protobuf: Swift.Bool = false) async throws -> Foundation.Data
+  final public func post(path: Swift.String, body: Foundation.Data?, contentType: Swift.String? = nil, protobuf: Swift.Bool = false) async throws -> Foundation.Data
+  final public func patch(path: Swift.String, body: Foundation.Data?, protobuf: Swift.Bool = false) async throws -> Foundation.Data
+  final public func put(path: Swift.String, body: Foundation.Data?, contentType: Swift.String? = nil) async throws -> Foundation.Data
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers final public class SquadAuth {
+  final public func createSession(email: Swift.String) async -> Swift.Bool
+  final public func createSession(phone: Swift.String) async -> Swift.Bool
+  final public func fulfillSession(email: Swift.String? = nil, phone: Swift.String? = nil, code: Swift.String) async -> Swift.Bool
+  final public var storedUserId: Swift.String? {
+    get
+  }
+  final public var storedCommunityId: Swift.String? {
+    get
+  }
+  final public var storedPartnerId: Swift.String? {
+    get
+  }
+  final public func logout()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers final public class SquadAudioRecorder : ObjectiveC.NSObject, AVFAudio.AVAudioRecorderDelegate, Combine.ObservableObject {
+  public enum State {
+    case idle
+    case recording
+    case recorded(url: Foundation.URL, duration: Foundation.TimeInterval)
+    case error(any Swift.Error)
+  }
+  final public var state: SquadSportsSDKCore.SquadAudioRecorder.State {
+    get
+  }
+  final public var onStateChange: ((SquadSportsSDKCore.SquadAudioRecorder.State) -> Swift.Void)?
+  final public func startRecording()
+  final public func stopRecording() -> (url: Foundation.URL, duration: Foundation.TimeInterval)?
+  final public func cancelRecording()
+  public static func readAudioData(from url: Foundation.URL) -> Foundation.Data?
+  final public var currentDuration: Foundation.TimeInterval {
+    get
+  }
+  @objc final public func audioRecorderDidFinishRecording(_ recorder: AVFAudio.AVAudioRecorder, successfully flag: Swift.Bool)
+  @objc override dynamic public init()
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers final public class SquadAudioPlayer : ObjectiveC.NSObject, AVFAudio.AVAudioPlayerDelegate, Combine.ObservableObject {
+  public enum State {
+    case idle
+    case playing(progress: Swift.Double)
+    case paused(progress: Swift.Double)
+    case finished
+  }
+  final public var state: SquadSportsSDKCore.SquadAudioPlayer.State {
+    get
+  }
+  final public var onStateChange: ((SquadSportsSDKCore.SquadAudioPlayer.State) -> Swift.Void)?
+  final public func play(url: Foundation.URL)
+  final public func pause()
+  final public func resume()
+  final public func stop()
+  final public var progress: Swift.Double {
+    get
+  }
+  final public var duration: Foundation.TimeInterval {
+    get
+  }
+  @objc final public func audioPlayerDidFinishPlaying(_ player: AVFAudio.AVAudioPlayer, successfully flag: Swift.Bool)
+  @objc override dynamic public init()
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+@_Concurrency.MainActor @preconcurrency public struct CommunityBottomSheet : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let communities: [SquadSportsSDKCore.CommunityData]?
+  @_Concurrency.MainActor @preconcurrency public var initialSelected: SquadSportsSDKCore.CommunityData?
+  @_Concurrency.MainActor @preconcurrency public let onSelect: ((SquadSportsSDKCore.CommunityData?) -> Swift.Void)?
+  @_Concurrency.MainActor @preconcurrency public let onDismiss: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public var isLoading: Swift.Bool
+  @_Concurrency.MainActor @preconcurrency public init(communities: [SquadSportsSDKCore.CommunityData]?, initialSelected: SquadSportsSDKCore.CommunityData? = nil, onSelect: ((SquadSportsSDKCore.CommunityData?) -> Swift.Void)? = nil, onDismiss: @escaping () -> Swift.Void, isLoading: Swift.Bool = false)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore20CommunityBottomSheetV4bodyQrvp", 0) __
+}
+public struct CommunityData : Swift.Identifiable {
+  public let id: Swift.String
+  public let name: Swift.String
+  public let imageUri: Swift.String?
+  public init(id: Swift.String, name: Swift.String, imageUri: Swift.String? = nil)
+  public typealias ID = Swift.String
+}
+@_Concurrency.MainActor @preconcurrency public struct CommunityRow : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let community: SquadSportsSDKCore.CommunityData
+  @_Concurrency.MainActor @preconcurrency public let onSelect: (SquadSportsSDKCore.CommunityData?) -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public let selectedCommunity: SquadSportsSDKCore.CommunityData?
+  @_Concurrency.MainActor @preconcurrency public init(community: SquadSportsSDKCore.CommunityData, onSelect: @escaping (SquadSportsSDKCore.CommunityData?) -> Swift.Void, selectedCommunity: SquadSportsSDKCore.CommunityData?)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore12CommunityRowV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct CommunityTag : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let imageUri: Swift.String?
+  @_Concurrency.MainActor @preconcurrency public var size: CoreFoundation.CGFloat?
+  @_Concurrency.MainActor @preconcurrency public init(imageUri: Swift.String? = nil, size: CoreFoundation.CGFloat? = nil)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore12CommunityTagV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct BlockConfirmation : SwiftUICore.View {
+  @SwiftUICore.Binding @_projectedValueProperty($isPresented) @_Concurrency.MainActor @preconcurrency public var isPresented: Swift.Bool {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating _modify
+  }
+  @_Concurrency.MainActor @preconcurrency public var $isPresented: SwiftUICore.Binding<Swift.Bool> {
+    get
+  }
+  @_Concurrency.MainActor @preconcurrency public let userName: Swift.String
+  @_Concurrency.MainActor @preconcurrency public let onConfirm: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public let onCancel: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(isPresented: SwiftUICore.Binding<Swift.Bool>, userName: Swift.String, onConfirm: @escaping () -> Swift.Void, onCancel: @escaping () -> Swift.Void = {})
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore17BlockConfirmationV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct DeleteConfirmation : SwiftUICore.View {
+  @SwiftUICore.Binding @_projectedValueProperty($isPresented) @_Concurrency.MainActor @preconcurrency public var isPresented: Swift.Bool {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating _modify
+  }
+  @_Concurrency.MainActor @preconcurrency public var $isPresented: SwiftUICore.Binding<Swift.Bool> {
+    get
+  }
+  @_Concurrency.MainActor @preconcurrency public let onConfirm: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public let onCancel: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(isPresented: SwiftUICore.Binding<Swift.Bool>, onConfirm: @escaping () -> Swift.Void, onCancel: @escaping () -> Swift.Void = {})
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore18DeleteConfirmationV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct FlagConfirmation : SwiftUICore.View {
+  @SwiftUICore.Binding @_projectedValueProperty($isPresented) @_Concurrency.MainActor @preconcurrency public var isPresented: Swift.Bool {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating _modify
+  }
+  @_Concurrency.MainActor @preconcurrency public var $isPresented: SwiftUICore.Binding<Swift.Bool> {
+    get
+  }
+  @_Concurrency.MainActor @preconcurrency public let contentType: Swift.String
+  @_Concurrency.MainActor @preconcurrency public let onConfirm: (SquadSportsSDKCore.FlagConfirmation.FlagReason) -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public let onCancel: () -> Swift.Void
+  public enum FlagReason : Swift.String, Swift.CaseIterable, Swift.Identifiable {
+    case spam
+    case harassment
+    case hateSpeech
+    case violence
+    case inappropriate
+    case other
+    public var id: Swift.String {
+      get
+    }
+    public init?(rawValue: Swift.String)
+    public typealias AllCases = [SquadSportsSDKCore.FlagConfirmation.FlagReason]
+    public typealias ID = Swift.String
+    public typealias RawValue = Swift.String
+    nonisolated public static var allCases: [SquadSportsSDKCore.FlagConfirmation.FlagReason] {
+      get
+    }
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+  @_Concurrency.MainActor @preconcurrency public init(isPresented: SwiftUICore.Binding<Swift.Bool>, contentType: Swift.String = "content", onConfirm: @escaping (SquadSportsSDKCore.FlagConfirmation.FlagReason) -> Swift.Void, onCancel: @escaping () -> Swift.Void = {})
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore16FlagConfirmationV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct NoConnectionDialog : SwiftUICore.View {
+  @SwiftUICore.Binding @_projectedValueProperty($isPresented) @_Concurrency.MainActor @preconcurrency public var isPresented: Swift.Bool {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating _modify
+  }
+  @_Concurrency.MainActor @preconcurrency public var $isPresented: SwiftUICore.Binding<Swift.Bool> {
+    get
+  }
+  @_Concurrency.MainActor @preconcurrency public let onRefresh: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(isPresented: SwiftUICore.Binding<Swift.Bool>, onRefresh: @escaping () -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore18NoConnectionDialogV4bodyQrvp", 0) __
+}
+public enum PermissionType : Swift.String, Swift.CaseIterable {
+  case camera
+  case microphone
+  case contacts
+  case photos
+  case notifications
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [SquadSportsSDKCore.PermissionType]
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [SquadSportsSDKCore.PermissionType] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@_Concurrency.MainActor @preconcurrency public struct PermissionDialog : SwiftUICore.View {
+  @SwiftUICore.Binding @_projectedValueProperty($isPresented) @_Concurrency.MainActor @preconcurrency public var isPresented: Swift.Bool {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating _modify
+  }
+  @_Concurrency.MainActor @preconcurrency public var $isPresented: SwiftUICore.Binding<Swift.Bool> {
+    get
+  }
+  @_Concurrency.MainActor @preconcurrency public let permissionType: SquadSportsSDKCore.PermissionType
+  @_Concurrency.MainActor @preconcurrency public let onAllow: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public let onDeny: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(isPresented: SwiftUICore.Binding<Swift.Bool>, permissionType: SquadSportsSDKCore.PermissionType, onAllow: @escaping () -> Swift.Void, onDeny: @escaping () -> Swift.Void = {})
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore16PermissionDialogV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct ProgressCongrats : SwiftUICore.View {
+  @SwiftUICore.Binding @_projectedValueProperty($isPresented) @_Concurrency.MainActor @preconcurrency public var isPresented: Swift.Bool {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating _modify
+  }
+  @_Concurrency.MainActor @preconcurrency public var $isPresented: SwiftUICore.Binding<Swift.Bool> {
+    get
+  }
+  @_Concurrency.MainActor @preconcurrency public let milestone: Swift.String
+  @_Concurrency.MainActor @preconcurrency public let message: Swift.String
+  @_Concurrency.MainActor @preconcurrency public let onDismiss: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(isPresented: SwiftUICore.Binding<Swift.Bool>, milestone: Swift.String, message: Swift.String, onDismiss: @escaping () -> Swift.Void = {})
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore16ProgressCongratsV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct RemoveFromSquad : SwiftUICore.View {
+  @SwiftUICore.Binding @_projectedValueProperty($isPresented) @_Concurrency.MainActor @preconcurrency public var isPresented: Swift.Bool {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating _modify
+  }
+  @_Concurrency.MainActor @preconcurrency public var $isPresented: SwiftUICore.Binding<Swift.Bool> {
+    get
+  }
+  @_Concurrency.MainActor @preconcurrency public let memberName: Swift.String
+  @_Concurrency.MainActor @preconcurrency public let squadName: Swift.String
+  @_Concurrency.MainActor @preconcurrency public let onConfirm: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public let onCancel: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(isPresented: SwiftUICore.Binding<Swift.Bool>, memberName: Swift.String, squadName: Swift.String, onConfirm: @escaping () -> Swift.Void, onCancel: @escaping () -> Swift.Void = {})
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore010RemoveFromA0V4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct SophiaIntroDialog : SwiftUICore.View {
+  @SwiftUICore.Binding @_projectedValueProperty($isPresented) @_Concurrency.MainActor @preconcurrency public var isPresented: Swift.Bool {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating _modify
+  }
+  @_Concurrency.MainActor @preconcurrency public var $isPresented: SwiftUICore.Binding<Swift.Bool> {
+    get
+  }
+  @_Concurrency.MainActor @preconcurrency public let onGetStarted: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(isPresented: SwiftUICore.Binding<Swift.Bool>, onGetStarted: @escaping () -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore17SophiaIntroDialogV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct SquadDialog<Content> : SwiftUICore.View where Content : SwiftUICore.View {
+  @SwiftUICore.Binding @_projectedValueProperty($isPresented) @_Concurrency.MainActor @preconcurrency public var isPresented: Swift.Bool {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating _modify
+  }
+  @_Concurrency.MainActor @preconcurrency public var $isPresented: SwiftUICore.Binding<Swift.Bool> {
+    get
+  }
+  @_Concurrency.MainActor @preconcurrency public let content: () -> Content
+  @_Concurrency.MainActor @preconcurrency public init(isPresented: SwiftUICore.Binding<Swift.Bool>, @SwiftUICore.ViewBuilder content: @escaping () -> Content)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore0A6DialogV4bodyQrvp", 0) __<Content>
+}
+@_Concurrency.MainActor @preconcurrency public struct VersionUpgradeDialog : SwiftUICore.View {
+  @SwiftUICore.Binding @_projectedValueProperty($isPresented) @_Concurrency.MainActor @preconcurrency public var isPresented: Swift.Bool {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating _modify
+  }
+  @_Concurrency.MainActor @preconcurrency public var $isPresented: SwiftUICore.Binding<Swift.Bool> {
+    get
+  }
+  @_Concurrency.MainActor @preconcurrency public let currentVersion: Swift.String
+  @_Concurrency.MainActor @preconcurrency public let newVersion: Swift.String
+  @_Concurrency.MainActor @preconcurrency public let isRequired: Swift.Bool
+  @_Concurrency.MainActor @preconcurrency public let onUpdate: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public let onSkip: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(isPresented: SwiftUICore.Binding<Swift.Bool>, currentVersion: Swift.String, newVersion: Swift.String, isRequired: Swift.Bool = false, onUpdate: @escaping () -> Swift.Void, onSkip: @escaping () -> Swift.Void = {})
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore20VersionUpgradeDialogV4bodyQrvp", 0) __
+}
+public struct CommunityListenData {
+  public let communityName: Swift.String
+  public let communityColor: Swift.String?
+  public let listenCount: Swift.Int
+  public let uniqueListeners: Swift.Int
+  public init(communityName: Swift.String, communityColor: Swift.String? = nil, listenCount: Swift.Int = 0, uniqueListeners: Swift.Int = 0)
+}
+@_Concurrency.MainActor @preconcurrency public struct CommunityListens : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let data: SquadSportsSDKCore.CommunityListenData
+  @_Concurrency.MainActor @preconcurrency public init(data: SquadSportsSDKCore.CommunityListenData)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore16CommunityListensV4bodyQrvp", 0) __
+}
+public struct EmojiReactionData : Swift.Identifiable {
+  public let id: Swift.String
+  public let reaction: Swift.String
+  public let count: Swift.Int
+  public init(id: Swift.String = UUID().uuidString, reaction: Swift.String, count: Swift.Int)
+  public typealias ID = Swift.String
+}
+@_Concurrency.MainActor @preconcurrency public struct EmojiReactions : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let reactions: [SquadSportsSDKCore.EmojiReactionData]
+  @_Concurrency.MainActor @preconcurrency public let onPress: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(reactions: [SquadSportsSDKCore.EmojiReactionData], onPress: @escaping () -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore14EmojiReactionsV4bodyQrvp", 0) __
+}
+public struct FreestyleData : Swift.Identifiable {
+  public let id: Swift.String
+  public var audioUrl: Swift.String?
+  public var duration: Foundation.TimeInterval?
+  public var creatorName: Swift.String?
+  public var creatorImageUrl: Swift.String?
+  public var createdAt: Foundation.Date?
+  public var listenCount: Swift.Int
+  public var reactionCount: Swift.Int
+  public var promptText: Swift.String?
+  public var freestyleLabel: Swift.String?
+  public var reactions: [SquadSportsSDKCore.EmojiReactionData]
+  public var listens: [SquadSportsSDKCore.ListenUserData]
+  public init(id: Swift.String, audioUrl: Swift.String? = nil, duration: Foundation.TimeInterval? = nil, creatorName: Swift.String? = nil, creatorImageUrl: Swift.String? = nil, createdAt: Foundation.Date? = nil, listenCount: Swift.Int = 0, reactionCount: Swift.Int = 0, promptText: Swift.String? = nil, freestyleLabel: Swift.String? = nil, reactions: [SquadSportsSDKCore.EmojiReactionData] = [], listens: [SquadSportsSDKCore.ListenUserData] = [])
+  public typealias ID = Swift.String
+}
+@_Concurrency.MainActor @preconcurrency public struct FreestyleFeedItem : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let freestyle: SquadSportsSDKCore.FreestyleData
+  @_Concurrency.MainActor @preconcurrency public let onFreestylePress: (SquadSportsSDKCore.FreestyleData) -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public let onReactionsPress: (SquadSportsSDKCore.FreestyleData) -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public let onListensPress: (SquadSportsSDKCore.FreestyleData) -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(freestyle: SquadSportsSDKCore.FreestyleData, onFreestylePress: @escaping (SquadSportsSDKCore.FreestyleData) -> Swift.Void, onReactionsPress: @escaping (SquadSportsSDKCore.FreestyleData) -> Swift.Void, onListensPress: @escaping (SquadSportsSDKCore.FreestyleData) -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore17FreestyleFeedItemV4bodyQrvp", 0) __
+}
+public enum FreestyleReplyStatus : Swift.String {
+  case pending
+  case uploading
+  case sent
+  case failed
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct FreestyleReplyData {
+  public let id: Swift.String?
+  public let prompt: Swift.String?
+  public let contentUrl: Swift.String?
+  public let emoji: Swift.String?
+  public let createdAt: Foundation.Date?
+  public let expiresAt: Foundation.Date?
+  public let creatorName: Swift.String?
+  public let creatorImageUrl: Swift.String?
+  public let duration: Foundation.TimeInterval?
+  public init(id: Swift.String? = nil, prompt: Swift.String? = nil, contentUrl: Swift.String? = nil, emoji: Swift.String? = nil, createdAt: Foundation.Date? = nil, expiresAt: Foundation.Date? = nil, creatorName: Swift.String? = nil, creatorImageUrl: Swift.String? = nil, duration: Foundation.TimeInterval? = nil)
+}
+@_Concurrency.MainActor @preconcurrency public struct FreestyleReplyCard : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let freestyle: SquadSportsSDKCore.FreestyleReplyData
+  @_Concurrency.MainActor @preconcurrency public var onMessageFeed: Swift.Bool
+  @_Concurrency.MainActor @preconcurrency public var hasPrevious: Swift.Bool
+  @_Concurrency.MainActor @preconcurrency public var isMine: Swift.Bool
+  @_Concurrency.MainActor @preconcurrency public var status: SquadSportsSDKCore.FreestyleReplyStatus
+  @_Concurrency.MainActor @preconcurrency public init(freestyle: SquadSportsSDKCore.FreestyleReplyData, onMessageFeed: Swift.Bool = false, hasPrevious: Swift.Bool = false, isMine: Swift.Bool = false, status: SquadSportsSDKCore.FreestyleReplyStatus = .sent)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore18FreestyleReplyCardV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct LabelTag : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let freestyleLabel: Swift.String
+  @_Concurrency.MainActor @preconcurrency public init(freestyleLabel: Swift.String)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore8LabelTagV4bodyQrvp", 0) __
+}
+public struct ListenUserData : Swift.Identifiable {
+  public let id: Swift.String
+  public let displayName: Swift.String
+  public let imageUrl: Swift.String?
+  public init(id: Swift.String, displayName: Swift.String, imageUrl: Swift.String? = nil)
+  public typealias ID = Swift.String
+}
+@_Concurrency.MainActor @preconcurrency public struct ListenReactions : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let listens: [SquadSportsSDKCore.ListenUserData]
+  @_Concurrency.MainActor @preconcurrency public let onPress: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(listens: [SquadSportsSDKCore.ListenUserData], onPress: @escaping () -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore15ListenReactionsV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct UserListen : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let userName: Swift.String
+  @_Concurrency.MainActor @preconcurrency public let userImageUrl: Swift.String?
+  @_Concurrency.MainActor @preconcurrency public var listenedAt: Swift.String?
+  @_Concurrency.MainActor @preconcurrency public init(userName: Swift.String, userImageUrl: Swift.String? = nil, listenedAt: Swift.String? = nil)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore10UserListenV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct UserReaction : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let userName: Swift.String
+  @_Concurrency.MainActor @preconcurrency public let userImageUrl: Swift.String?
+  @_Concurrency.MainActor @preconcurrency public let emoji: Swift.String
+  @_Concurrency.MainActor @preconcurrency public init(userName: Swift.String, userImageUrl: Swift.String? = nil, emoji: Swift.String)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore12UserReactionV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct ChatBubble : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let message: Swift.String
+  @_Concurrency.MainActor @preconcurrency public let memberCircleSize: CoreFoundation.CGFloat
+  @_Concurrency.MainActor @preconcurrency public init(message: Swift.String, memberCircleSize: CoreFoundation.CGFloat = 52)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore10ChatBubbleV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct CircleTopRow : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let members: [SquadSportsSDKCore.SquadMemberDisplay]
+  @_Concurrency.MainActor @preconcurrency public let circleSize: CoreFoundation.CGFloat
+  @_Concurrency.MainActor @preconcurrency public let onTapMember: (SquadSportsSDKCore.SquadMemberDisplay) -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(members: [SquadSportsSDKCore.SquadMemberDisplay], circleSize: CoreFoundation.CGFloat = 52, onTapMember: @escaping (SquadSportsSDKCore.SquadMemberDisplay) -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore12CircleTopRowV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct CircleCenterRow : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let leftMember: SquadSportsSDKCore.SquadMemberDisplay?
+  @_Concurrency.MainActor @preconcurrency public let rightMember: SquadSportsSDKCore.SquadMemberDisplay?
+  @_Concurrency.MainActor @preconcurrency public let circleSize: CoreFoundation.CGFloat
+  @_Concurrency.MainActor @preconcurrency public let centerWidth: CoreFoundation.CGFloat
+  @_Concurrency.MainActor @preconcurrency public let onTapMember: (SquadSportsSDKCore.SquadMemberDisplay) -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public let centerContent: SwiftUICore.AnyView?
+  @_Concurrency.MainActor @preconcurrency public init(leftMember: SquadSportsSDKCore.SquadMemberDisplay?, rightMember: SquadSportsSDKCore.SquadMemberDisplay?, circleSize: CoreFoundation.CGFloat = 52, centerWidth: CoreFoundation.CGFloat = 120, onTapMember: @escaping (SquadSportsSDKCore.SquadMemberDisplay) -> Swift.Void, centerContent: SwiftUICore.AnyView? = nil)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore15CircleCenterRowV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct CircleBottomRow : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let members: [SquadSportsSDKCore.SquadMemberDisplay]
+  @_Concurrency.MainActor @preconcurrency public let circleSize: CoreFoundation.CGFloat
+  @_Concurrency.MainActor @preconcurrency public let onTapMember: (SquadSportsSDKCore.SquadMemberDisplay) -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(members: [SquadSportsSDKCore.SquadMemberDisplay], circleSize: CoreFoundation.CGFloat = 52, onTapMember: @escaping (SquadSportsSDKCore.SquadMemberDisplay) -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore15CircleBottomRowV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct CircleDisplay : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let topMembers: [SquadSportsSDKCore.SquadMemberDisplay]
+  @_Concurrency.MainActor @preconcurrency public let leftMember: SquadSportsSDKCore.SquadMemberDisplay?
+  @_Concurrency.MainActor @preconcurrency public let rightMember: SquadSportsSDKCore.SquadMemberDisplay?
+  @_Concurrency.MainActor @preconcurrency public let bottomMembers: [SquadSportsSDKCore.SquadMemberDisplay]
+  @_Concurrency.MainActor @preconcurrency public let circleSize: CoreFoundation.CGFloat
+  @_Concurrency.MainActor @preconcurrency public let onTapMember: (SquadSportsSDKCore.SquadMemberDisplay) -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(topMembers: [SquadSportsSDKCore.SquadMemberDisplay], leftMember: SquadSportsSDKCore.SquadMemberDisplay?, rightMember: SquadSportsSDKCore.SquadMemberDisplay?, bottomMembers: [SquadSportsSDKCore.SquadMemberDisplay], circleSize: CoreFoundation.CGFloat = 52, onTapMember: @escaping (SquadSportsSDKCore.SquadMemberDisplay) -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore13CircleDisplayV4bodyQrvp", 0) __
+}
+public struct SquadMemberDisplay : Swift.Identifiable, Swift.Equatable {
+  public let id: Swift.String
+  public let name: Swift.String
+  public let avatarURL: Foundation.URL?
+  public let hasUnreadChat: Swift.Bool
+  public let lastMessage: Swift.String?
+  public let lastActiveAgo: Swift.String?
+  public init(id: Swift.String, name: Swift.String, avatarURL: Foundation.URL?, hasUnreadChat: Swift.Bool = false, lastMessage: Swift.String? = nil, lastActiveAgo: Swift.String? = nil)
+  public static func == (a: SquadSportsSDKCore.SquadMemberDisplay, b: SquadSportsSDKCore.SquadMemberDisplay) -> Swift.Bool
+  public typealias ID = Swift.String
+}
+@_Concurrency.MainActor @preconcurrency public struct SquaddyImage : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let member: SquadSportsSDKCore.SquadMemberDisplay
+  @_Concurrency.MainActor @preconcurrency public let size: CoreFoundation.CGFloat
+  @_Concurrency.MainActor @preconcurrency public let onTap: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(member: SquadSportsSDKCore.SquadMemberDisplay, size: CoreFoundation.CGFloat = 52, onTap: @escaping () -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore12SquaddyImageV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct SquaddyTimestamp : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let timeAgo: Swift.String
+  @_Concurrency.MainActor @preconcurrency public init(timeAgo: Swift.String)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  @_Concurrency.MainActor @preconcurrency public static func relativeTime(from date: Foundation.Date) -> Swift.String
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore16SquaddyTimestampV4bodyQrvp", 0) __
+}
+public struct ContactItemData : Swift.Identifiable {
+  public let id: Swift.String
+  public let name: Swift.String
+  public let phoneNumbers: [Swift.String]
+  public let imageUri: Swift.String?
+  public let initials: Swift.String?
+  public init(id: Swift.String, name: Swift.String, phoneNumbers: [Swift.String] = [], imageUri: Swift.String? = nil, initials: Swift.String? = nil)
+  public typealias ID = Swift.String
+}
+@_Concurrency.MainActor @preconcurrency public struct ContactItem : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let contact: SquadSportsSDKCore.ContactItemData
+  @_Concurrency.MainActor @preconcurrency public let sendInvite: (SquadSportsSDKCore.ContactItemData) -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(contact: SquadSportsSDKCore.ContactItemData, sendInvite: @escaping (SquadSportsSDKCore.ContactItemData) -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore11ContactItemV4bodyQrvp", 0) __
+}
+public struct SquadUserData : Swift.Identifiable {
+  public let id: Swift.String
+  public let displayName: Swift.String
+  public let imageUrl: Swift.String?
+  public let community: Swift.String?
+  public init(id: Swift.String, displayName: Swift.String, imageUrl: Swift.String? = nil, community: Swift.String? = nil)
+  public typealias ID = Swift.String
+}
+@_Concurrency.MainActor @preconcurrency public struct ContactOnSquadItem : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let contactName: Swift.String?
+  @_Concurrency.MainActor @preconcurrency public let user: SquadSportsSDKCore.SquadUserData
+  @_Concurrency.MainActor @preconcurrency public let handleInvite: (SquadSportsSDKCore.SquadUserData) -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public var communityName: Swift.String?
+  @_Concurrency.MainActor @preconcurrency public init(contactName: Swift.String? = nil, user: SquadSportsSDKCore.SquadUserData, handleInvite: @escaping (SquadSportsSDKCore.SquadUserData) -> Swift.Void, communityName: Swift.String? = nil)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore09ContactOnA4ItemV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct ContactSectionHeader : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let title: Swift.String
+  @_Concurrency.MainActor @preconcurrency public init(title: Swift.String)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore20ContactSectionHeaderV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct ContactThumbnail : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let imageUrl: Swift.String?
+  @_Concurrency.MainActor @preconcurrency public let initials: Swift.String?
+  @_Concurrency.MainActor @preconcurrency public let size: CoreFoundation.CGFloat
+  @_Concurrency.MainActor @preconcurrency public init(imageUrl: Swift.String? = nil, initials: Swift.String? = nil, size: CoreFoundation.CGFloat = 56)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore16ContactThumbnailV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct InviteSquadMaxedSheet : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let onConfirm: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(onConfirm: @escaping () -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore06InviteA10MaxedSheetV4bodyQrvp", 0) __
+}
+public struct RequestUserData : Swift.Identifiable {
+  public let id: Swift.String
+  public let displayName: Swift.String
+  public let imageUrl: Swift.String?
+  public let community: Swift.String?
+  public let status: Swift.String?
+  public init(id: Swift.String, displayName: Swift.String, imageUrl: Swift.String? = nil, community: Swift.String? = nil, status: Swift.String? = nil)
+  public typealias ID = Swift.String
+}
+@_Concurrency.MainActor @preconcurrency public struct RequestItem : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let contactName: Swift.String?
+  @_Concurrency.MainActor @preconcurrency public let user: SquadSportsSDKCore.RequestUserData
+  @_Concurrency.MainActor @preconcurrency public let isRequestSent: Swift.Bool
+  @_Concurrency.MainActor @preconcurrency public let retractInvite: (SquadSportsSDKCore.RequestUserData, Swift.Bool) -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public let acceptInvite: (SquadSportsSDKCore.RequestUserData) -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public let blockInvite: (SquadSportsSDKCore.RequestUserData) -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public var communityName: Swift.String?
+  @_Concurrency.MainActor @preconcurrency public init(contactName: Swift.String? = nil, user: SquadSportsSDKCore.RequestUserData, isRequestSent: Swift.Bool, retractInvite: @escaping (SquadSportsSDKCore.RequestUserData, Swift.Bool) -> Swift.Void, acceptInvite: @escaping (SquadSportsSDKCore.RequestUserData) -> Swift.Void, blockInvite: @escaping (SquadSportsSDKCore.RequestUserData) -> Swift.Void, communityName: Swift.String? = nil)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore11RequestItemV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct NetworkBanner : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public var dismissible: Swift.Bool
+  @_Concurrency.MainActor @preconcurrency public var offlineMessage: Swift.String
+  @_Concurrency.MainActor @preconcurrency public var reconnectingMessage: Swift.String
+  @_Concurrency.MainActor @preconcurrency public var onDismiss: (() -> Swift.Void)?
+  @_Concurrency.MainActor @preconcurrency public init(dismissible: Swift.Bool = true, offlineMessage: Swift.String = "You're offline. Showing saved content.", reconnectingMessage: Swift.String = "Reconnecting...", onDismiss: (() -> Swift.Void)? = nil)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore13NetworkBannerV4bodyQrvp", 0) __
+}
+public struct PhotoAsset {
+  public let uri: Swift.String
+  public var width: Swift.Int?
+  public var height: Swift.Int?
+  public var type: Swift.String?
+  public var fileName: Swift.String?
+  public init(uri: Swift.String, width: Swift.Int? = nil, height: Swift.Int? = nil, type: Swift.String? = nil, fileName: Swift.String? = nil)
+}
+@_Concurrency.MainActor @preconcurrency public struct PhotoActionSheet : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let onSelectPhoto: () async -> SquadSportsSDKCore.PhotoAsset?
+  @_Concurrency.MainActor @preconcurrency public let onTakePhoto: () async -> SquadSportsSDKCore.PhotoAsset?
+  @_Concurrency.MainActor @preconcurrency public let onPhotoSelected: (SquadSportsSDKCore.PhotoAsset) -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public let onCancel: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(onSelectPhoto: @escaping () async -> SquadSportsSDKCore.PhotoAsset?, onTakePhoto: @escaping () async -> SquadSportsSDKCore.PhotoAsset?, onPhotoSelected: @escaping (SquadSportsSDKCore.PhotoAsset) -> Swift.Void, onCancel: @escaping () -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore16PhotoActionSheetV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct ProfilePhotoSelector : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let photo: SquadSportsSDKCore.PhotoAsset?
+  @_Concurrency.MainActor @preconcurrency public let showWarning: Swift.Bool
+  @_Concurrency.MainActor @preconcurrency public let onAddPhoto: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(photo: SquadSportsSDKCore.PhotoAsset?, showWarning: Swift.Bool, onAddPhoto: @escaping () -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore20ProfilePhotoSelectorV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct WelcomeAnimation : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public var topInset: CoreFoundation.CGFloat
+  @_Concurrency.MainActor @preconcurrency public init(topInset: CoreFoundation.CGFloat = 0)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore16WelcomeAnimationV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct EmptyFeedText : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let displayName: Swift.String
+  @_Concurrency.MainActor @preconcurrency public let isMyProfile: Swift.Bool
+  @_Concurrency.MainActor @preconcurrency public let isNotInMySquad: Swift.Bool
+  @_Concurrency.MainActor @preconcurrency public var isEmcee: Swift.Bool
+  @_Concurrency.MainActor @preconcurrency public init(displayName: Swift.String, isMyProfile: Swift.Bool, isNotInMySquad: Swift.Bool, isEmcee: Swift.Bool = false)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore13EmptyFeedTextV4bodyQrvp", 0) __
+}
+public enum ConnectionStatus : Swift.String {
+  case none
+  case invited
+  case accepted
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct NonSquaddyUser : Swift.Identifiable {
+  public let id: Swift.String
+  public let displayName: Swift.String
+  public init(id: Swift.String, displayName: Swift.String)
+  public typealias ID = Swift.String
+}
+@_Concurrency.MainActor @preconcurrency public struct NonSquaddyConnectionButton : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let user: SquadSportsSDKCore.NonSquaddyUser
+  @_Concurrency.MainActor @preconcurrency public var connectionStatus: SquadSportsSDKCore.ConnectionStatus
+  @_Concurrency.MainActor @preconcurrency public var isInviteCreator: Swift.Bool
+  @_Concurrency.MainActor @preconcurrency public let onAddToSquad: (Swift.String) async -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public let onAcceptInvite: (Swift.String) async -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public let onCancelRequest: (Swift.String) async -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(user: SquadSportsSDKCore.NonSquaddyUser, connectionStatus: SquadSportsSDKCore.ConnectionStatus = .none, isInviteCreator: Swift.Bool = false, onAddToSquad: @escaping (Swift.String) async -> Swift.Void, onAcceptInvite: @escaping (Swift.String) async -> Swift.Void, onCancelRequest: @escaping (Swift.String) async -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore26NonSquaddyConnectionButtonV4bodyQrvp", 0) __
+}
+public struct ProfilePollCardUser {
+  public let id: Swift.String
+  public let displayName: Swift.String
+  public let imageUrl: Swift.String?
+  public init(id: Swift.String, displayName: Swift.String, imageUrl: Swift.String? = nil)
+}
+public struct ProfilePollCardData : Swift.Identifiable {
+  public let id: Swift.String
+  public let data: [Swift.String : Any]
+  public init(id: Swift.String, data: [Swift.String : Any] = [:])
+  public typealias ID = Swift.String
+}
+@_Concurrency.MainActor @preconcurrency public struct ProfilePollCard<MyPollCard, SquaddyPollCard> : SwiftUICore.View where MyPollCard : SwiftUICore.View, SquaddyPollCard : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let isMyProfile: Swift.Bool
+  @_Concurrency.MainActor @preconcurrency public let poll: SquadSportsSDKCore.ProfilePollCardData
+  @_Concurrency.MainActor @preconcurrency public let user: SquadSportsSDKCore.ProfilePollCardUser
+  @_Concurrency.MainActor @preconcurrency public var collectionId: Swift.String?
+  @_Concurrency.MainActor @preconcurrency public let myPollCard: ((SquadSportsSDKCore.ProfilePollCardData, Swift.String?) -> MyPollCard)?
+  @_Concurrency.MainActor @preconcurrency public let squaddyPollCard: ((SquadSportsSDKCore.ProfilePollCardData, SquadSportsSDKCore.ProfilePollCardUser, Swift.String?) -> SquaddyPollCard)?
+  @_Concurrency.MainActor @preconcurrency public init(isMyProfile: Swift.Bool, poll: SquadSportsSDKCore.ProfilePollCardData, user: SquadSportsSDKCore.ProfilePollCardUser, collectionId: Swift.String? = nil, @SwiftUICore.ViewBuilder myPollCard: @escaping (SquadSportsSDKCore.ProfilePollCardData, Swift.String?) -> MyPollCard, @SwiftUICore.ViewBuilder squaddyPollCard: @escaping (SquadSportsSDKCore.ProfilePollCardData, SquadSportsSDKCore.ProfilePollCardUser, Swift.String?) -> SquaddyPollCard)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore15ProfilePollCardV4bodyQrvp", 0) __<MyPollCard, SquaddyPollCard>
+}
+extension SquadSportsSDKCore.ProfilePollCard where MyPollCard == SwiftUICore.EmptyView, SquaddyPollCard == SwiftUICore.EmptyView {
+  @_Concurrency.MainActor @preconcurrency public init(isMyProfile: Swift.Bool, poll: SquadSportsSDKCore.ProfilePollCardData, user: SquadSportsSDKCore.ProfilePollCardUser, collectionId: Swift.String? = nil)
+}
+@_Concurrency.MainActor @preconcurrency public struct AnimatedUserPlus : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let size: CoreFoundation.CGFloat
+  @_Concurrency.MainActor @preconcurrency public let onTap: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(size: CoreFoundation.CGFloat = 56, onTap: @escaping () -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore16AnimatedUserPlusV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct CurrentSotdUser : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let avatarURL: Foundation.URL?
+  @_Concurrency.MainActor @preconcurrency public let name: Swift.String
+  @_Concurrency.MainActor @preconcurrency public let size: CoreFoundation.CGFloat
+  @_Concurrency.MainActor @preconcurrency public init(avatarURL: Foundation.URL?, name: Swift.String, size: CoreFoundation.CGFloat = 64)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore15CurrentSotdUserV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct SOTDTag : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let size: CoreFoundation.CGFloat
+  @_Concurrency.MainActor @preconcurrency public init(size: CoreFoundation.CGFloat = 22)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore7SOTDTagV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct SotdBlockedSheet : SwiftUICore.View {
+  @SwiftUICore.Binding @_projectedValueProperty($isPresented) @_Concurrency.MainActor @preconcurrency public var isPresented: Swift.Bool {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating _modify
+  }
+  @_Concurrency.MainActor @preconcurrency public var $isPresented: SwiftUICore.Binding<Swift.Bool> {
+    get
+  }
+  @_Concurrency.MainActor @preconcurrency public let requiredMembers: Swift.Int
+  @_Concurrency.MainActor @preconcurrency public let currentMembers: Swift.Int
+  @_Concurrency.MainActor @preconcurrency public let onInvite: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(isPresented: SwiftUICore.Binding<Swift.Bool>, requiredMembers: Swift.Int, currentMembers: Swift.Int, onInvite: @escaping () -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore16SotdBlockedSheetV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct SotdButton : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let isUnlocked: Swift.Bool
+  @_Concurrency.MainActor @preconcurrency public let shiftersNeeded: Swift.Int
+  @_Concurrency.MainActor @preconcurrency public let onTap: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(isUnlocked: Swift.Bool, shiftersNeeded: Swift.Int = 0, onTap: @escaping () -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore10SotdButtonV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct SotdIntroSheet : SwiftUICore.View {
+  @SwiftUICore.Binding @_projectedValueProperty($isPresented) @_Concurrency.MainActor @preconcurrency public var isPresented: Swift.Bool {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating _modify
+  }
+  @_Concurrency.MainActor @preconcurrency public var $isPresented: SwiftUICore.Binding<Swift.Bool> {
+    get
+  }
+  @_Concurrency.MainActor @preconcurrency public let onGetStarted: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(isPresented: SwiftUICore.Binding<Swift.Bool>, onGetStarted: @escaping () -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore14SotdIntroSheetV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct SotdOverlayIntro : SwiftUICore.View {
+  @SwiftUICore.Binding @_projectedValueProperty($isPresented) @_Concurrency.MainActor @preconcurrency public var isPresented: Swift.Bool {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating _modify
+  }
+  @_Concurrency.MainActor @preconcurrency public var $isPresented: SwiftUICore.Binding<Swift.Bool> {
+    get
+  }
+  @_Concurrency.MainActor @preconcurrency public let onComplete: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(isPresented: SwiftUICore.Binding<Swift.Bool>, onComplete: @escaping () -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore16SotdOverlayIntroV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct SotdSelectingSheet : SwiftUICore.View {
+  @SwiftUICore.Binding @_projectedValueProperty($isPresented) @_Concurrency.MainActor @preconcurrency public var isPresented: Swift.Bool {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating _modify
+  }
+  @_Concurrency.MainActor @preconcurrency public var $isPresented: SwiftUICore.Binding<Swift.Bool> {
+    get
+  }
+  @_Concurrency.MainActor @preconcurrency public let members: [SquadSportsSDKCore.SotdMember]
+  @_Concurrency.MainActor @preconcurrency public let onSelected: (SquadSportsSDKCore.SotdMember) -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(isPresented: SwiftUICore.Binding<Swift.Bool>, members: [SquadSportsSDKCore.SotdMember], onSelected: @escaping (SquadSportsSDKCore.SotdMember) -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore18SotdSelectingSheetV4bodyQrvp", 0) __
+}
+public struct SotdMember : Swift.Identifiable, Swift.Equatable {
+  public let id: Swift.String
+  public let name: Swift.String
+  public let avatarURL: Foundation.URL?
+  public init(id: Swift.String, name: Swift.String, avatarURL: Foundation.URL?)
+  public static func == (a: SquadSportsSDKCore.SotdMember, b: SquadSportsSDKCore.SotdMember) -> Swift.Bool
+  public typealias ID = Swift.String
+}
+@_hasMissingDesignatedInitializers final public class AppBackgroundState : Combine.ObservableObject {
+  @Combine.Published @_projectedValueProperty($lastForegroundDate) final public var lastForegroundDate: Foundation.Date? {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  final public var $lastForegroundDate: Combine.Published<Foundation.Date?>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  @Combine.Published @_projectedValueProperty($wasLongBackground) final public var wasLongBackground: Swift.Bool {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  final public var $wasLongBackground: Combine.Published<Swift.Bool>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  final public var onLongBackground: (() -> Swift.Void)?
+  final public var onIntegrityFailure: (() -> Swift.Void)?
+  public static let shared: SquadSportsSDKCore.AppBackgroundState
+  final public func reset()
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers final public class CommunityThemeSyncer : Combine.ObservableObject {
+  @Combine.Published @_projectedValueProperty($currentTheme) final public var currentTheme: SquadSportsSDKCore.SquadTheme {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  final public var $currentTheme: Combine.Published<SquadSportsSDKCore.SquadTheme>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  @Combine.Published @_projectedValueProperty($currentCommunityId) final public var currentCommunityId: Swift.String? {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  final public var $currentCommunityId: Combine.Published<Swift.String?>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  public static let shared: SquadSportsSDKCore.CommunityThemeSyncer
+  final public func syncCommunity(communityId: Swift.String?, communityColor: Swift.String?, secondaryColor: Swift.String?)
+  final public func reset()
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+public struct FirstSquaddyEvent {
+  public let loggedInUserId: Swift.String
+  public let squaddyName: Swift.String
+  public let squaddyId: Swift.String
+  public init(loggedInUserId: Swift.String, squaddyName: Swift.String, squaddyId: Swift.String)
+}
+@_hasMissingDesignatedInitializers final public class FirstSquaddySentinel : Combine.ObservableObject {
+  @Combine.Published @_projectedValueProperty($firstSquaddyEvent) final public var firstSquaddyEvent: SquadSportsSDKCore.FirstSquaddyEvent? {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  final public var $firstSquaddyEvent: Combine.Published<SquadSportsSDKCore.FirstSquaddyEvent?>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  @Combine.Published @_projectedValueProperty($hasTriggered) final public var hasTriggered: Swift.Bool {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  final public var $hasTriggered: Combine.Published<Swift.Bool>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  final public var onFirstSquaddy: ((SquadSportsSDKCore.FirstSquaddyEvent) -> Swift.Void)?
+  public static let shared: SquadSportsSDKCore.FirstSquaddySentinel
+  final public func checkConnections(loggedInUserId: Swift.String, connections: [[Swift.String : Any]])
+  final public func reset()
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers final public class NetworkBannerSentinel : Combine.ObservableObject {
+  @Combine.Published @_projectedValueProperty($isBannerVisible) final public var isBannerVisible: Swift.Bool {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  final public var $isBannerVisible: Combine.Published<Swift.Bool>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  @Combine.Published @_projectedValueProperty($networkState) final public var networkState: SquadSportsSDKCore.NetworkBannerSentinel.NetworkState {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  final public var $networkState: Combine.Published<SquadSportsSDKCore.NetworkBannerSentinel.NetworkState>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  public enum NetworkState {
+    case online
+    case offline
+    case reconnecting
+    public static func == (a: SquadSportsSDKCore.NetworkBannerSentinel.NetworkState, b: SquadSportsSDKCore.NetworkBannerSentinel.NetworkState) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public static let shared: SquadSportsSDKCore.NetworkBannerSentinel
+  final public func reset()
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+public struct NotificationRouteAction {
+  public let type: Swift.String
+  public let targetId: Swift.String?
+  public let data: [Swift.String : Any]
+  public init(type: Swift.String, targetId: Swift.String? = nil, data: [Swift.String : Any] = [:])
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers final public class NotificationHandler : ObjectiveC.NSObject, Combine.ObservableObject, UserNotifications.UNUserNotificationCenterDelegate {
+  @Combine.Published @_projectedValueProperty($pushToken) final public var pushToken: Swift.String? {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  final public var $pushToken: Combine.Published<Swift.String?>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  @Combine.Published @_projectedValueProperty($pendingRoute) final public var pendingRoute: SquadSportsSDKCore.NotificationRouteAction? {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  final public var $pendingRoute: Combine.Published<SquadSportsSDKCore.NotificationRouteAction?>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  final public var onNavigate: ((SquadSportsSDKCore.NotificationRouteAction) -> Swift.Void)?
+  final public var onRefresh: (() -> Swift.Void)?
+  public static let shared: SquadSportsSDKCore.NotificationHandler
+  final public func registerForPushNotifications()
+  final public func didRegisterForRemoteNotifications(deviceToken: Foundation.Data)
+  @objc final public func userNotificationCenter(_ center: UserNotifications.UNUserNotificationCenter, willPresent notification: UserNotifications.UNNotification, withCompletionHandler completionHandler: @escaping (UserNotifications.UNNotificationPresentationOptions) -> Swift.Void)
+  @objc final public func userNotificationCenter(_ center: UserNotifications.UNUserNotificationCenter, didReceive response: UserNotifications.UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Swift.Void)
+  final public func checkColdStartNotification()
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers final public class UpdateDeviceInfo : Combine.ObservableObject {
+  @Combine.Published @_projectedValueProperty($lastSynced) final public var lastSynced: Foundation.Date? {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  final public var $lastSynced: Combine.Published<Foundation.Date?>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  public struct DeviceInfoPayload {
+    public let platform: Swift.String
+    public let osVersion: Swift.String
+    public let appVersion: Swift.String
+    public let deviceModel: Swift.String
+    public let pushToken: Swift.String?
+    public init(platform: Swift.String = "ios", osVersion: Swift.String = UIDevice.current.systemVersion, appVersion: Swift.String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.1.0", deviceModel: Swift.String = UIDevice.current.model, pushToken: Swift.String? = nil)
+  }
+  public static let shared: SquadSportsSDKCore.UpdateDeviceInfo
+  final public func sync(apiClient: SquadSportsSDKCore.SquadAPIClient, pushToken: Swift.String? = nil)
+  final public func collect(pushToken: Swift.String? = nil) -> SquadSportsSDKCore.UpdateDeviceInfo.DeviceInfoPayload
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+@_Concurrency.MainActor @preconcurrency public struct CommunitySettingsSection : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let onPressCommunitySettings: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(onPressCommunitySettings: @escaping () -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore24CommunitySettingsSectionV4bodyQrvp", 0) __
+}
+public struct UserSettingsData {
+  public var displayName: Swift.String
+  public var email: Swift.String
+  public var phone: Swift.String
+  public var birthday: Swift.String
+  public var zipCode: Swift.String
+  public init(displayName: Swift.String = "", email: Swift.String = "", phone: Swift.String = "", birthday: Swift.String = "", zipCode: Swift.String = "")
+}
+@_Concurrency.MainActor @preconcurrency public struct PersonalSettingsSection : SwiftUICore.View {
+  @SwiftUICore.Binding @_projectedValueProperty($userData) @_Concurrency.MainActor @preconcurrency public var userData: SquadSportsSDKCore.UserSettingsData {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating _modify
+  }
+  @_Concurrency.MainActor @preconcurrency public var $userData: SwiftUICore.Binding<SquadSportsSDKCore.UserSettingsData> {
+    get
+  }
+  @_Concurrency.MainActor @preconcurrency public var onUserInfoChanged: ((Swift.Bool) -> Swift.Void)?
+  @_Concurrency.MainActor @preconcurrency public init(userData: SwiftUICore.Binding<SquadSportsSDKCore.UserSettingsData>, onUserInfoChanged: ((Swift.Bool) -> Swift.Void)? = nil)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore23PersonalSettingsSectionV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct BusyToast : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let message: Swift.String
+  @_Concurrency.MainActor @preconcurrency public init(message: Swift.String)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore9BusyToastV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct ErrorToast : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let message: Swift.String
+  @_Concurrency.MainActor @preconcurrency public var onPress: (() -> Swift.Void)?
+  @_Concurrency.MainActor @preconcurrency public init(message: Swift.String, onPress: (() -> Swift.Void)? = nil)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore10ErrorToastV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct SuccessToast : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let message: Swift.String
+  @_Concurrency.MainActor @preconcurrency public var accentColor: SwiftUICore.Color
+  @_Concurrency.MainActor @preconcurrency public init(message: Swift.String, accentColor: SwiftUICore.Color = SquadColors.purple1)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore12SuccessToastV4bodyQrvp", 0) __
+}
+public enum ToastType {
+  case success
+  case error
+  case busy
+  public static func == (a: SquadSportsSDKCore.ToastType, b: SquadSportsSDKCore.ToastType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct ToastEntry : Swift.Identifiable {
+  public let id: Swift.String
+  public let type: SquadSportsSDKCore.ToastType
+  public let message: Swift.String
+  public init(id: Swift.String = UUID().uuidString, type: SquadSportsSDKCore.ToastType, message: Swift.String)
+  public typealias ID = Swift.String
+}
+@_Concurrency.MainActor @preconcurrency public struct ToastContainer : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let toast: SquadSportsSDKCore.ToastEntry?
+  @_Concurrency.MainActor @preconcurrency public let onDismiss: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(toast: SquadSportsSDKCore.ToastEntry?, onDismiss: @escaping () -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore14ToastContainerV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct CouponCard : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let coupon: SquadSportsSDKCore.CouponData
+  @_Concurrency.MainActor @preconcurrency public let onReveal: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public let onCopy: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public let onShare: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(coupon: SquadSportsSDKCore.CouponData, onReveal: @escaping () -> Swift.Void, onCopy: @escaping () -> Swift.Void, onShare: @escaping () -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore10CouponCardV4bodyQrvp", 0) __
+}
+public struct CouponData : Swift.Identifiable, Swift.Equatable {
+  public let id: Swift.String
+  public let brandName: Swift.String
+  public let brandLogoURL: Foundation.URL?
+  public let discountText: Swift.String
+  public let description: Swift.String
+  public let code: Swift.String
+  public let expiryDate: Swift.String
+  public init(id: Swift.String, brandName: Swift.String, brandLogoURL: Foundation.URL?, discountText: Swift.String, description: Swift.String, code: Swift.String, expiryDate: Swift.String)
+  public static func == (a: SquadSportsSDKCore.CouponData, b: SquadSportsSDKCore.CouponData) -> Swift.Bool
+  public typealias ID = Swift.String
+}
+@_Concurrency.MainActor @preconcurrency public struct CouponShareOverlay : SwiftUICore.View {
+  @SwiftUICore.Binding @_projectedValueProperty($isPresented) @_Concurrency.MainActor @preconcurrency public var isPresented: Swift.Bool {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating _modify
+  }
+  @_Concurrency.MainActor @preconcurrency public var $isPresented: SwiftUICore.Binding<Swift.Bool> {
+    get
+  }
+  @_Concurrency.MainActor @preconcurrency public let coupon: SquadSportsSDKCore.CouponData
+  @_Concurrency.MainActor @preconcurrency public let onShareAction: (SquadSportsSDKCore.CouponShareOverlay.ShareMethod) -> Swift.Void
+  public enum ShareMethod {
+    case copy, message, social, more
+    public static func == (a: SquadSportsSDKCore.CouponShareOverlay.ShareMethod, b: SquadSportsSDKCore.CouponShareOverlay.ShareMethod) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  @_Concurrency.MainActor @preconcurrency public init(isPresented: SwiftUICore.Binding<Swift.Bool>, coupon: SquadSportsSDKCore.CouponData, onShareAction: @escaping (SquadSportsSDKCore.CouponShareOverlay.ShareMethod) -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore18CouponShareOverlayV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct EventsAttendeesSheet : SwiftUICore.View {
+  @SwiftUICore.Binding @_projectedValueProperty($isPresented) @_Concurrency.MainActor @preconcurrency public var isPresented: Swift.Bool {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating _modify
+  }
+  @_Concurrency.MainActor @preconcurrency public var $isPresented: SwiftUICore.Binding<Swift.Bool> {
+    get
+  }
+  @_Concurrency.MainActor @preconcurrency public let eventName: Swift.String
+  @_Concurrency.MainActor @preconcurrency public let attendees: [SquadSportsSDKCore.Attendee]
+  @_Concurrency.MainActor @preconcurrency public init(isPresented: SwiftUICore.Binding<Swift.Bool>, eventName: Swift.String, attendees: [SquadSportsSDKCore.Attendee])
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore20EventsAttendeesSheetV4bodyQrvp", 0) __
+}
+public struct Attendee : Swift.Identifiable, Swift.Equatable {
+  public let id: Swift.String
+  public let name: Swift.String
+  public let avatarURL: Foundation.URL?
+  public let isSquadMember: Swift.Bool
+  public init(id: Swift.String, name: Swift.String, avatarURL: Foundation.URL?, isSquadMember: Swift.Bool = false)
+  public static func == (a: SquadSportsSDKCore.Attendee, b: SquadSportsSDKCore.Attendee) -> Swift.Bool
+  public typealias ID = Swift.String
+}
+@_Concurrency.MainActor @preconcurrency public struct RedeemSheet : SwiftUICore.View {
+  @SwiftUICore.Binding @_projectedValueProperty($isPresented) @_Concurrency.MainActor @preconcurrency public var isPresented: Swift.Bool {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    nonmutating _modify
+  }
+  @_Concurrency.MainActor @preconcurrency public var $isPresented: SwiftUICore.Binding<Swift.Bool> {
+    get
+  }
+  @_Concurrency.MainActor @preconcurrency public let coupon: SquadSportsSDKCore.CouponData
+  @_Concurrency.MainActor @preconcurrency public let conditions: [SquadSportsSDKCore.RedeemCondition]
+  @_Concurrency.MainActor @preconcurrency public let onRedeem: () -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(isPresented: SwiftUICore.Binding<Swift.Bool>, coupon: SquadSportsSDKCore.CouponData, conditions: [SquadSportsSDKCore.RedeemCondition], onRedeem: @escaping () -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore11RedeemSheetV4bodyQrvp", 0) __
+}
+public struct RedeemCondition : Swift.Identifiable {
+  public let id: Swift.String
+  public let text: Swift.String
+  public let isMet: Swift.Bool
+  public init(id: Swift.String, text: Swift.String, isMet: Swift.Bool)
+  public typealias ID = Swift.String
+}
+@_Concurrency.MainActor @preconcurrency public struct WalletContainer : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let coupons: [SquadSportsSDKCore.CouponData]
+  @_Concurrency.MainActor @preconcurrency public let onReveal: (SquadSportsSDKCore.CouponData) -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public let onCopy: (SquadSportsSDKCore.CouponData) -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public let onShare: (SquadSportsSDKCore.CouponData) -> Swift.Void
+  @_Concurrency.MainActor @preconcurrency public init(coupons: [SquadSportsSDKCore.CouponData], onReveal: @escaping (SquadSportsSDKCore.CouponData) -> Swift.Void, onCopy: @escaping (SquadSportsSDKCore.CouponData) -> Swift.Void, onShare: @escaping (SquadSportsSDKCore.CouponData) -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore15WalletContainerV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct WalletHeader : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public let walletName: Swift.String
+  @_Concurrency.MainActor @preconcurrency public let couponCount: Swift.Int
+  @_Concurrency.MainActor @preconcurrency public init(walletName: Swift.String = "741", couponCount: Swift.Int = 0)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18SquadSportsSDKCore12WalletHeaderV4bodyQrvp", 0) __
+}
+public enum SquadAnalyticsEvent : Swift.String {
+  case sdkInitialized
+  case sessionCreated
+  case sessionFulfilled
+  case sessionRestored
+  case ssoLogin
+  case partnerSync
+  case partnerSyncSuccess
+  case partnerSyncFailed
+  case screenView
+  case freestyleCreated
+  case freestylePlayed
+  case messageSent
+  case messageAudioSent
+  case pollVoted
+  case callStarted
+  case callEnded
+  case inviteShared
+  case inviteRedeemed
+  case couponRedeemed
+  case profileUpdated
+  case communityChanged
+  case eventAttended
+  case reactionSent
+  case sponsorshipImpression
+  case sponsorshipEngagement
+  case sponsorshipClick
+  case sponsorshipDismissed
+  case error
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers final public class SquadAnalytics {
+  public static let shared: SquadSportsSDKCore.SquadAnalytics
+  final public var customHandler: ((Swift.String, [Swift.String : Any]) -> Swift.Void)?
+  final public func configure(partnerId: Swift.String?, userId: Swift.String?, baseURL: Swift.String?, enabled: Swift.Bool = true)
+  final public func track(_ event: SquadSportsSDKCore.SquadAnalyticsEvent, properties: [Swift.String : Any] = [:])
+  final public func trackScreen(_ name: Swift.String)
+  final public func setUserId(_ id: Swift.String)
+  final public func flush()
+  @objc deinit
+}
+public enum SquadConnectionQuality : Swift.String {
+  case good, poor, disconnected
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum SquadEventType : Swift.String {
+  case connected
+  case feedUpdate
+  case pollUpdate
+  case squadMemberAdd
+  case squadMemberRemove
+  case squadInviteSent
+  case squadInviteAccepted
+  case messageCreate
+  case attendeeUpdate
+  case authInvalid
+  case connectionQuality
+  case unknown
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct SquadEvent {
+  public let type: SquadSportsSDKCore.SquadEventType
+  public let rawType: Swift.String
+  public let data: [Swift.String : Any]
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers final public class SquadEventProcessor : ObjectiveC.NSObject, Foundation.URLSessionDataDelegate {
+  public static let shared: SquadSportsSDKCore.SquadEventProcessor
+  final public let eventPublisher: Combine.PassthroughSubject<SquadSportsSDKCore.SquadEvent, Swift.Never>
+  final public let qualityPublisher: Combine.PassthroughSubject<SquadSportsSDKCore.SquadConnectionQuality, Swift.Never>
+  final public var connectionQuality: SquadSportsSDKCore.SquadConnectionQuality {
+    get
+  }
+  final public func setApiClient(_ client: SquadSportsSDKCore.SquadAPIClient)
+  final public func setShouldAllowEvents(_ allow: Swift.Bool)
+  final public func connect()
+  final public func disconnect()
+  @objc final public func urlSession(_ session: Foundation.URLSession, dataTask: Foundation.URLSessionDataTask, didReceive data: Foundation.Data)
+  @objc final public func urlSession(_ session: Foundation.URLSession, task: Foundation.URLSessionTask, didCompleteWithError error: (any Swift.Error)?)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers final public class SquadNetworkMonitor {
+  public static let shared: SquadSportsSDKCore.SquadNetworkMonitor
+  final public let isOnlinePublisher: Combine.CurrentValueSubject<Swift.Bool, Swift.Never>
+  final public var isOnline: Swift.Bool {
+    get
+  }
+  final public func startMonitoring()
+  final public func stopMonitoring()
+  @objc deinit
+}
+public enum OfflineActionType : Swift.String, Swift.Codable {
+  case messageCreate
+  case freestyleCreate
+  case pollResponse
+  case messageReaction
+  case freestyleReaction
+  case userUpdate
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct OfflineAction : Swift.Codable, Swift.Identifiable {
+  public let id: Swift.String
+  public let type: SquadSportsSDKCore.OfflineActionType
+  public let payload: Foundation.Data
+  public let createdAt: Foundation.Date
+  public var attempts: Swift.Int
+  public typealias ID = Swift.String
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+@_hasMissingDesignatedInitializers final public class SquadOfflineQueue {
+  public static let shared: SquadSportsSDKCore.SquadOfflineQueue
+  final public func enqueue(type: SquadSportsSDKCore.OfflineActionType, payload: Foundation.Data)
+  final public func processQueue(executor: @escaping (SquadSportsSDKCore.OfflineAction) async -> Swift.Bool) async -> (succeeded: Swift.Int, failed: Swift.Int)
+  final public var pendingCount: Swift.Int {
+    get
+  }
+  final public func clear()
+  @objc deinit
+}
+public enum SquadNotificationType : Swift.String {
+  case message
+  case squadInvite
+  case incomingCall
+  case poll
+  case freestyle
+  case reaction
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@objc @_hasMissingDesignatedInitializers @_Concurrency.MainActor @preconcurrency final public class SquadExperienceViewController : UIKit.UIViewController {
+  @_Concurrency.MainActor @preconcurrency @objc override final public func viewDidLoad()
+  @_Concurrency.MainActor @preconcurrency @objc override final public var preferredStatusBarStyle: UIKit.UIStatusBarStyle {
+    @objc get
+  }
+  @objc deinit
+}
+public protocol SquadLineDelegate : AnyObject {
+  func squadLine(_ manager: SquadSportsSDKCore.SquadLineManager, didChangeState state: SquadSportsSDKCore.SquadLineManager.CallState)
+  func squadLine(_ manager: SquadSportsSDKCore.SquadLineManager, didReceiveIncomingCall from: Swift.String, title: Swift.String)
+  func squadLineDidConnect(_ manager: SquadSportsSDKCore.SquadLineManager)
+  func squadLineDidDisconnect(_ manager: SquadSportsSDKCore.SquadLineManager)
+  func squadLine(_ manager: SquadSportsSDKCore.SquadLineManager, didFailWithError error: any Swift.Error)
+}
+@objc @_hasMissingDesignatedInitializers final public class SquadLineManager : ObjectiveC.NSObject {
+  public enum CallState : Swift.String {
+    case idle
+    case connecting
+    case ringing
+    case connected
+    case disconnected
+    case failed
+    public init?(rawValue: Swift.String)
+    public typealias RawValue = Swift.String
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+  weak final public var delegate: (any SquadSportsSDKCore.SquadLineDelegate)?
+  final public var callState: SquadSportsSDKCore.SquadLineManager.CallState {
+    get
+  }
+  final public var isMuted: Swift.Bool {
+    get
+  }
+  final public var isSpeakerOn: Swift.Bool {
+    get
+  }
+  final public func register(pushToken: Foundation.Data) async throws
+  final public func makeCall(connectionId: Swift.String, title: Swift.String, calleeIdentity: Swift.String? = nil) async throws
+  final public func handleIncomingPush(payload: [Swift.AnyHashable : Any])
+  final public func acceptCall()
+  final public func rejectCall()
+  final public func endCall()
+  final public func toggleMute()
+  final public func toggleSpeaker()
+  @objc deinit
+}
+extension SquadSportsSDKCore.SquadLineManager : TwilioVoice.CallDelegate {
+  @objc final public func callDidStartRinging(call: TwilioVoice.Call)
+  @objc final public func callDidConnect(call: TwilioVoice.Call)
+  @objc final public func callDidDisconnect(call: TwilioVoice.Call, error: (any Swift.Error)?)
+  @objc final public func callDidFailToConnect(call: TwilioVoice.Call, error: any Swift.Error)
+}
+extension SquadSportsSDKCore.SquadLineManager : TwilioVoice.NotificationDelegate {
+  @objc final public func callInviteReceived(callInvite: TwilioVoice.CallInvite)
+  @objc final public func cancelledCallInviteReceived(cancelledCallInvite: TwilioVoice.CancelledCallInvite, error: any Swift.Error)
+}
+extension SquadSportsSDKCore.SquadLineManager : CallKit.CXProviderDelegate {
+  @objc final public func providerDidReset(_ provider: CallKit.CXProvider)
+  @objc final public func provider(_ provider: CallKit.CXProvider, perform action: CallKit.CXAnswerCallAction)
+  @objc final public func provider(_ provider: CallKit.CXProvider, perform action: CallKit.CXEndCallAction)
+  @objc final public func provider(_ provider: CallKit.CXProvider, perform action: CallKit.CXSetMutedCallAction)
+  @objc final public func provider(_ provider: CallKit.CXProvider, didActivate audioSession: AVFAudio.AVAudioSession)
+  @objc final public func provider(_ provider: CallKit.CXProvider, didDeactivate audioSession: AVFAudio.AVAudioSession)
+}
+public enum SquadLineError : Swift.Error, Foundation.LocalizedError {
+  case alreadyInCall
+  case notRegistered
+  case noVoiceToken
+  public var errorDescription: Swift.String? {
+    get
+  }
+  public static func == (a: SquadSportsSDKCore.SquadLineError, b: SquadSportsSDKCore.SquadLineError) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct SquadSDKConfig {
+  public let apiKey: Swift.String
+  public let environment: SquadSportsSDKCore.SquadEnvironment
+  public let community: SquadSportsSDKCore.CommunityConfig
+  public let features: SquadSportsSDKCore.FeatureFlags
+  public let sso: SquadSportsSDKCore.SSOConfig?
+  public let partnerAuth: SquadSportsSDKCore.PartnerAuthContext?
+  public init(apiKey: Swift.String, environment: SquadSportsSDKCore.SquadEnvironment = .production, community: SquadSportsSDKCore.CommunityConfig, features: SquadSportsSDKCore.FeatureFlags = FeatureFlags(), sso: SquadSportsSDKCore.SSOConfig? = nil, partnerAuth: SquadSportsSDKCore.PartnerAuthContext? = nil)
+}
+public struct PartnerUserData {
+  public let email: Swift.String?
+  public let phone: Swift.String?
+  public let displayName: Swift.String?
+  public let avatarUrl: Swift.String?
+  public let externalUserId: Swift.String?
+  public init(email: Swift.String? = nil, phone: Swift.String? = nil, displayName: Swift.String? = nil, avatarUrl: Swift.String? = nil, externalUserId: Swift.String? = nil)
+}
+public struct PartnerAuthContext {
+  public let partnerId: Swift.String
+  public let communityId: Swift.String
+  public let userData: SquadSportsSDKCore.PartnerUserData?
+  public init(partnerId: Swift.String, communityId: Swift.String, userData: SquadSportsSDKCore.PartnerUserData? = nil)
+}
+public struct SSOConfig {
+  public let provider: SquadSportsSDKCore.SSOProvider
+  public let accessToken: Swift.String?
+  public let clientId: Swift.String?
+  public init(provider: SquadSportsSDKCore.SSOProvider, accessToken: Swift.String? = nil, clientId: Swift.String? = nil)
+}
+public enum SSOProvider : Swift.String {
+  case ticketmaster
+  case oauth2
+  case custom
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum SquadEnvironment : Swift.String {
+  case production
+  case staging
+  case development
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct CommunityConfig {
+  public let id: Swift.String
+  public let name: Swift.String
+  public let primaryColor: Swift.String
+  public let secondaryColor: Swift.String?
+  public init(id: Swift.String, name: Swift.String, primaryColor: Swift.String, secondaryColor: Swift.String? = nil)
+}
+public struct FeatureFlags {
+  public let squadLine: Swift.Bool
+  public let freestyle: Swift.Bool
+  public let messaging: Swift.Bool
+  public let polls: Swift.Bool
+  public let events: Swift.Bool
+  public let wallet: Swift.Bool
+  public init(squadLine: Swift.Bool = false, freestyle: Swift.Bool = true, messaging: Swift.Bool = true, polls: Swift.Bool = true, events: Swift.Bool = true, wallet: Swift.Bool = false)
+}
+@_hasMissingDesignatedInitializers final public class SquadSDK {
+  public static var shared: SquadSportsSDKCore.SquadSDK! {
+    get
+  }
+  public static var isInitialized: Swift.Bool {
+    get
+  }
+  final public let config: SquadSportsSDKCore.SquadSDKConfig
+  final public let apiClient: SquadSportsSDKCore.SquadAPIClient
+  final public let auth: SquadSportsSDKCore.SquadAuth
+  final public let squadLine: SquadSportsSDKCore.SquadLineManager
+  @discardableResult
+  public static func setup(partnerId: Swift.String, apiKey: Swift.String, environment: SquadSportsSDKCore.SquadEnvironment = .production, ssoToken: Swift.String? = nil, ssoProvider: SquadSportsSDKCore.SSOProvider? = nil, userData: SquadSportsSDKCore.PartnerUserData? = nil, pushToken: Swift.String? = nil) async throws -> SquadSportsSDKCore.SquadSDK
+  @discardableResult
+  public static func configure(config: SquadSportsSDKCore.SquadSDKConfig) -> SquadSportsSDKCore.SquadSDK
+  final public func createExperienceViewController() -> SquadSportsSDKCore.SquadExperienceViewController
+  final public func restoreSession() async -> Swift.Bool
+  final public func authenticateWithSSO(provider: SquadSportsSDKCore.SSOProvider, token: Swift.String) async -> Swift.Bool
+  @objc deinit
+}
+public enum SquadSDKError : Swift.Error, Foundation.LocalizedError {
+  case invalidPartnerID
+  case partnerNotFound(Swift.String)
+  case invalidProvisionResponse
+  public var errorDescription: Swift.String? {
+    get
+  }
+}
+public enum SquadColors {
+  public static let darkBg: SwiftUICore.Color
+  public static let cardBg: SwiftUICore.Color
+  public static let gray5: SwiftUICore.Color
+  public static let gray6: SwiftUICore.Color
+  public static let purple1: SwiftUICore.Color
+  public static let orange1: SwiftUICore.Color
+  public static let red: SwiftUICore.Color
+  public static let gold: SwiftUICore.Color
+  public static let gray1: SwiftUICore.Color
+  public static let gray2: SwiftUICore.Color
+  public static let gray3: SwiftUICore.Color
+  public static let gray4: SwiftUICore.Color
+  public static let gray8: SwiftUICore.Color
+  public static let gray11: SwiftUICore.Color
+  public static let purple2: SwiftUICore.Color
+  public static let orange2: SwiftUICore.Color
+  public static let apricot: SwiftUICore.Color
+}
+public struct SquadTheme {
+  public let screenBackground: SwiftUICore.Color
+  public let buttonColor: SwiftUICore.Color
+  public let buttonTextColor: SwiftUICore.Color
+  public let primaryColor: SwiftUICore.Color
+  public let secondaryColor: SwiftUICore.Color
+  public let tertiaryColor: SwiftUICore.Color
+  public let isDarkMode: Swift.Bool
+  public static let `default`: SquadSportsSDKCore.SquadTheme
+  public static func community(primaryColor: Swift.String, secondaryColor: Swift.String? = nil) -> SquadSportsSDKCore.SquadTheme
+}
+public enum SquadLogLevel : Swift.Int, Swift.Comparable {
+  case debug
+  case info
+  case warn
+  case error
+  public static func < (lhs: SquadSportsSDKCore.SquadLogLevel, rhs: SquadSportsSDKCore.SquadLogLevel) -> Swift.Bool
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public protocol SquadLogSink {
+  func log(level: SquadSportsSDKCore.SquadLogLevel, message: Swift.String, context: [Swift.String : Swift.String])
+}
+public struct SquadPrintLogSink : SquadSportsSDKCore.SquadLogSink {
+  public init()
+  public func log(level: SquadSportsSDKCore.SquadLogLevel, message: Swift.String, context: [Swift.String : Swift.String])
+}
+@_hasMissingDesignatedInitializers final public class SquadLogger {
+  public static let shared: SquadSportsSDKCore.SquadLogger
+  final public var minLevel: SquadSportsSDKCore.SquadLogLevel
+  final public var sink: any SquadSportsSDKCore.SquadLogSink
+  final public func configure(partnerId: Swift.String?, userId: Swift.String?, environment: Swift.String?)
+  final public func setUserId(_ id: Swift.String?)
+  final public func debug(_ message: Swift.String, extra: [Swift.String : Swift.String] = [:])
+  final public func info(_ message: Swift.String, extra: [Swift.String : Swift.String] = [:])
+  final public func warn(_ message: Swift.String, extra: [Swift.String : Swift.String] = [:])
+  final public func error(_ message: Swift.String, extra: [Swift.String : Swift.String] = [:])
+  @objc deinit
+}
+extension SquadSportsSDKCore.CommunityBottomSheet : Swift.Sendable {}
+extension SquadSportsSDKCore.CommunityRow : Swift.Sendable {}
+extension SquadSportsSDKCore.CommunityTag : Swift.Sendable {}
+extension SquadSportsSDKCore.BlockConfirmation : Swift.Sendable {}
+extension SquadSportsSDKCore.DeleteConfirmation : Swift.Sendable {}
+extension SquadSportsSDKCore.FlagConfirmation : Swift.Sendable {}
+extension SquadSportsSDKCore.FlagConfirmation.FlagReason : Swift.Equatable {}
+extension SquadSportsSDKCore.FlagConfirmation.FlagReason : Swift.Hashable {}
+extension SquadSportsSDKCore.FlagConfirmation.FlagReason : Swift.RawRepresentable {}
+extension SquadSportsSDKCore.NoConnectionDialog : Swift.Sendable {}
+extension SquadSportsSDKCore.PermissionType : Swift.Equatable {}
+extension SquadSportsSDKCore.PermissionType : Swift.Hashable {}
+extension SquadSportsSDKCore.PermissionType : Swift.RawRepresentable {}
+extension SquadSportsSDKCore.PermissionDialog : Swift.Sendable {}
+extension SquadSportsSDKCore.ProgressCongrats : Swift.Sendable {}
+extension SquadSportsSDKCore.RemoveFromSquad : Swift.Sendable {}
+extension SquadSportsSDKCore.SophiaIntroDialog : Swift.Sendable {}
+extension SquadSportsSDKCore.SquadDialog : Swift.Sendable {}
+extension SquadSportsSDKCore.VersionUpgradeDialog : Swift.Sendable {}
+extension SquadSportsSDKCore.CommunityListens : Swift.Sendable {}
+extension SquadSportsSDKCore.EmojiReactions : Swift.Sendable {}
+extension SquadSportsSDKCore.FreestyleFeedItem : Swift.Sendable {}
+extension SquadSportsSDKCore.FreestyleReplyStatus : Swift.Equatable {}
+extension SquadSportsSDKCore.FreestyleReplyStatus : Swift.Hashable {}
+extension SquadSportsSDKCore.FreestyleReplyStatus : Swift.RawRepresentable {}
+extension SquadSportsSDKCore.FreestyleReplyCard : Swift.Sendable {}
+extension SquadSportsSDKCore.LabelTag : Swift.Sendable {}
+extension SquadSportsSDKCore.ListenReactions : Swift.Sendable {}
+extension SquadSportsSDKCore.UserListen : Swift.Sendable {}
+extension SquadSportsSDKCore.UserReaction : Swift.Sendable {}
+extension SquadSportsSDKCore.ChatBubble : Swift.Sendable {}
+extension SquadSportsSDKCore.CircleTopRow : Swift.Sendable {}
+extension SquadSportsSDKCore.CircleCenterRow : Swift.Sendable {}
+extension SquadSportsSDKCore.CircleBottomRow : Swift.Sendable {}
+extension SquadSportsSDKCore.CircleDisplay : Swift.Sendable {}
+extension SquadSportsSDKCore.SquaddyImage : Swift.Sendable {}
+extension SquadSportsSDKCore.SquaddyTimestamp : Swift.Sendable {}
+extension SquadSportsSDKCore.ContactItem : Swift.Sendable {}
+extension SquadSportsSDKCore.ContactOnSquadItem : Swift.Sendable {}
+extension SquadSportsSDKCore.ContactSectionHeader : Swift.Sendable {}
+extension SquadSportsSDKCore.ContactThumbnail : Swift.Sendable {}
+extension SquadSportsSDKCore.InviteSquadMaxedSheet : Swift.Sendable {}
+extension SquadSportsSDKCore.RequestItem : Swift.Sendable {}
+extension SquadSportsSDKCore.NetworkBanner : Swift.Sendable {}
+extension SquadSportsSDKCore.PhotoActionSheet : Swift.Sendable {}
+extension SquadSportsSDKCore.ProfilePhotoSelector : Swift.Sendable {}
+extension SquadSportsSDKCore.WelcomeAnimation : Swift.Sendable {}
+extension SquadSportsSDKCore.EmptyFeedText : Swift.Sendable {}
+extension SquadSportsSDKCore.ConnectionStatus : Swift.Equatable {}
+extension SquadSportsSDKCore.ConnectionStatus : Swift.Hashable {}
+extension SquadSportsSDKCore.ConnectionStatus : Swift.RawRepresentable {}
+extension SquadSportsSDKCore.NonSquaddyConnectionButton : Swift.Sendable {}
+extension SquadSportsSDKCore.ProfilePollCard : Swift.Sendable {}
+extension SquadSportsSDKCore.AnimatedUserPlus : Swift.Sendable {}
+extension SquadSportsSDKCore.CurrentSotdUser : Swift.Sendable {}
+extension SquadSportsSDKCore.SOTDTag : Swift.Sendable {}
+extension SquadSportsSDKCore.SotdBlockedSheet : Swift.Sendable {}
+extension SquadSportsSDKCore.SotdButton : Swift.Sendable {}
+extension SquadSportsSDKCore.SotdIntroSheet : Swift.Sendable {}
+extension SquadSportsSDKCore.SotdOverlayIntro : Swift.Sendable {}
+extension SquadSportsSDKCore.SotdSelectingSheet : Swift.Sendable {}
+extension SquadSportsSDKCore.NetworkBannerSentinel.NetworkState : Swift.Equatable {}
+extension SquadSportsSDKCore.NetworkBannerSentinel.NetworkState : Swift.Hashable {}
+extension SquadSportsSDKCore.CommunitySettingsSection : Swift.Sendable {}
+extension SquadSportsSDKCore.PersonalSettingsSection : Swift.Sendable {}
+extension SquadSportsSDKCore.BusyToast : Swift.Sendable {}
+extension SquadSportsSDKCore.ErrorToast : Swift.Sendable {}
+extension SquadSportsSDKCore.SuccessToast : Swift.Sendable {}
+extension SquadSportsSDKCore.ToastType : Swift.Equatable {}
+extension SquadSportsSDKCore.ToastType : Swift.Hashable {}
+extension SquadSportsSDKCore.ToastContainer : Swift.Sendable {}
+extension SquadSportsSDKCore.CouponCard : Swift.Sendable {}
+extension SquadSportsSDKCore.CouponShareOverlay : Swift.Sendable {}
+extension SquadSportsSDKCore.CouponShareOverlay.ShareMethod : Swift.Equatable {}
+extension SquadSportsSDKCore.CouponShareOverlay.ShareMethod : Swift.Hashable {}
+extension SquadSportsSDKCore.EventsAttendeesSheet : Swift.Sendable {}
+extension SquadSportsSDKCore.RedeemSheet : Swift.Sendable {}
+extension SquadSportsSDKCore.WalletContainer : Swift.Sendable {}
+extension SquadSportsSDKCore.WalletHeader : Swift.Sendable {}
+extension SquadSportsSDKCore.SquadAnalyticsEvent : Swift.Equatable {}
+extension SquadSportsSDKCore.SquadAnalyticsEvent : Swift.Hashable {}
+extension SquadSportsSDKCore.SquadAnalyticsEvent : Swift.RawRepresentable {}
+extension SquadSportsSDKCore.SquadConnectionQuality : Swift.Equatable {}
+extension SquadSportsSDKCore.SquadConnectionQuality : Swift.Hashable {}
+extension SquadSportsSDKCore.SquadConnectionQuality : Swift.RawRepresentable {}
+extension SquadSportsSDKCore.SquadEventType : Swift.Equatable {}
+extension SquadSportsSDKCore.SquadEventType : Swift.Hashable {}
+extension SquadSportsSDKCore.SquadEventType : Swift.RawRepresentable {}
+extension SquadSportsSDKCore.OfflineActionType : Swift.Equatable {}
+extension SquadSportsSDKCore.OfflineActionType : Swift.Hashable {}
+extension SquadSportsSDKCore.OfflineActionType : Swift.RawRepresentable {}
+extension SquadSportsSDKCore.SquadNotificationType : Swift.Equatable {}
+extension SquadSportsSDKCore.SquadNotificationType : Swift.Hashable {}
+extension SquadSportsSDKCore.SquadNotificationType : Swift.RawRepresentable {}
+extension SquadSportsSDKCore.SquadLineManager.CallState : Swift.Equatable {}
+extension SquadSportsSDKCore.SquadLineManager.CallState : Swift.Hashable {}
+extension SquadSportsSDKCore.SquadLineManager.CallState : Swift.RawRepresentable {}
+extension SquadSportsSDKCore.SquadLineError : Swift.Equatable {}
+extension SquadSportsSDKCore.SquadLineError : Swift.Hashable {}
+extension SquadSportsSDKCore.SSOProvider : Swift.Equatable {}
+extension SquadSportsSDKCore.SSOProvider : Swift.Hashable {}
+extension SquadSportsSDKCore.SSOProvider : Swift.RawRepresentable {}
+extension SquadSportsSDKCore.SquadEnvironment : Swift.Equatable {}
+extension SquadSportsSDKCore.SquadEnvironment : Swift.Hashable {}
+extension SquadSportsSDKCore.SquadEnvironment : Swift.RawRepresentable {}
+extension SquadSportsSDKCore.SquadLogLevel : Swift.Hashable {}
+extension SquadSportsSDKCore.SquadLogLevel : Swift.RawRepresentable {}
